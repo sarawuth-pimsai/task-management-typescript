@@ -62,6 +62,7 @@ describe('Delete Owner Task', () => {
   })
 
   afterAll(() => {
+    ownerId = ''
     tasks = []
     taskIDs = []
   })
