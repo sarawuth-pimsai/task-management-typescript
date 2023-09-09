@@ -7,13 +7,16 @@ import NotFoundError from '@errors/not-found.error'
 import DeleteOwnerTaskService, {
   DeleteOwnerTaskServiceContext,
 } from './delete-owner-task.service'
+import UserMemory, { UserMemoryConfig } from '@persistent/memory/user.memory'
 
 describe('Delete Owner Task', () => {
+  let ownerId: string
   let taskIDs: string[]
   let tasks: Task[]
   let service: DeleteOwnerTaskService
 
-  function createTasks(no: number): Task[] {
+  function createTasks(ownerId: string, no: number): Task[] {
+    let otherUserId: string = faker.string.uuid()
     let tasks: Task[] = []
     for (let i: number = 0; i < no; i++) {
       const task: Task = {
@@ -25,7 +28,7 @@ describe('Delete Owner Task', () => {
           'IN_PROGRESS',
           'TODO',
         ]),
-        userId: faker.string.uuid(),
+        userId: faker.helpers.arrayElement([otherUserId, ownerId]),
         created: faker.date.anytime(),
       }
       tasks.push(task)
@@ -33,21 +36,28 @@ describe('Delete Owner Task', () => {
     return tasks
   }
 
-  function createTasksContext(tasks: Task[]) {
+  function createDeleteOwnerTaskServiceContext(tasks: Task[]) {
     const taskMemoryConfig: TaskMemoryConfig = {
       tasks,
     }
     const taskMemory: TaskMemory = new TaskMemory(taskMemoryConfig)
+    const userMemoryConfig: UserMemoryConfig = {
+      users: [{ id: ownerId, displayName: faker.person.fullName() }],
+    }
+    const userMemory: UserMemory = new UserMemory(userMemoryConfig)
     const deleteOwnerTaskServiceContext: DeleteOwnerTaskServiceContext = {
       deleteTaskRepo: taskMemory,
+      getTaskRepo: taskMemory,
+      getUserRepo: userMemory,
     }
     return { deleteOwnerTaskServiceContext }
   }
 
   beforeAll(() => {
-    tasks = createTasks(10)
+    ownerId = faker.string.uuid()
+    tasks = createTasks(ownerId, 10)
     taskIDs = tasks.map((task) => task.id)
-    const context = createTasksContext(tasks)
+    const context = createDeleteOwnerTaskServiceContext(tasks)
     service = new DeleteOwnerTaskService(context.deleteOwnerTaskServiceContext)
   })
 
@@ -72,10 +82,11 @@ describe('Delete Owner Task', () => {
   })
 
   it(`should return throw don't have permition`, () => {
-    const userId: string = faker.string.uuid()
-    const taskId: string = taskIDs[0]
+    const notUserTasks: Task[] = tasks.filter((task) => task.userId !== ownerId)
+    const notUserTaskIDs: string[] = notUserTasks.map((task) => task.id)
+    const taskId: string = notUserTaskIDs[0]
     expect(async () => {
-      await service.deleteOwnerTask(userId, taskId)
+      await service.deleteOwnerTask(ownerId, taskId)
     }).rejects.toThrow(ForbiddenError)
   })
 
@@ -89,10 +100,12 @@ describe('Delete Owner Task', () => {
   })
 
   it(`should return success`, async () => {
-    const currentTask: Task = tasks[0]
-    const { id, userId } = currentTask
+    const ownerTasks: Task[] = tasks.filter((task) => task.userId === ownerId)
+    const deleteTask: Task = ownerTasks[0]
+    const { id, userId } = deleteTask
     const expectResult: boolean = true
     const result: boolean = await service.deleteOwnerTask(userId, id)
+
     expect(result).toBe(expectResult)
   })
 })

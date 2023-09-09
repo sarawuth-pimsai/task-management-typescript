@@ -2,7 +2,7 @@
   "verbose": true,
   "clearMocks": true,
   "transform": {
-    "^.+\\.(t|j)sx?$": "@swc/jest"
+    "^.+\\.ts?$": "@swc/jest"
   },
   "moduleNameMapper": {
     "^@application/(.*)$": "<rootDir>/application/$1",
@@ -10,6 +10,7 @@
     "^@configs/(.*)$": "<rootDir>/configs/$1",
     "^@domain/(.*)$": "<rootDir>/domain/$1",
     "^@errors/(.*)$": "<rootDir>/errors/$1",
+    "^@utils/(.*)$": "<rootDir>/utils/$1",
     "^@persistent/(.*)$": "<rootDir>/infrastructure/persistent/$1",
     "^@rest/(.*)$": "<rootDir>/presentation/rest/$1"
   }
