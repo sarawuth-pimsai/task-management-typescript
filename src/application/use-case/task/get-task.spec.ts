@@ -70,6 +70,6 @@ describe('Get Task', () => {
     const expectTasks: Task[] = tasks.filter((task) => task.id === taskId)
     const expectTask: Task = expectTasks[0]
     const result: Task | undefined = await service.getTask(taskId)
-    expect(result).toBe(expectTask)
+    expect(result).toEqual(expectTask)
   })
 })
