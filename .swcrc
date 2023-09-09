@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json.schemastore.org/swcrc",
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "tsx": false,
+      "decorators": true,
+      "dynamicImport": true
+    },
+    "target": "es2016",
+    "baseUrl": ".",
+    "paths": {
+      "@application/*": ["./src/application/*"],
+      "@cmd/*": ["./src/cmd/*"],
+      "@configs/*": ["./src/configs/*"],
+      "@domain/*": ["./src/domain/*"],
+      "@errors/*": ["./src/errors/*"],
+      "@persistent/*": ["./src/infrastructure/persistent/*"],
+      "@rest/*": ["./src/presentation/rest/*"]
+    }
+  },
+  "module": {
+    "type": "commonjs"
+  }
+}
