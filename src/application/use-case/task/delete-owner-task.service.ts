@@ -35,7 +35,6 @@ export default class DeleteOwnerTaskService implements DeleteOwnerTaskUseCase {
     const user: User | undefined = await this.getUserRepo.getUser(userId)
     const task: Task | undefined = await this.getTaskRepo.getTask(taskId)
     if (!user || !task) {
-      console.log(`Not found user id: ${user} ${task}`)
       throw new NotFoundError(`Not found this user or this task`)
     }
     if (task.userId !== user.id) {
