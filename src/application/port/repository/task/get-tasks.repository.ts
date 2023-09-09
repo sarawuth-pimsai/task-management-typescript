@@ -1,5 +1,5 @@
 import { Task, TaskFilter } from '@domain/entity/task'
 
 export default interface GetTasksRepository {
-  getTasks(filter: TaskFilter): Promise<Task[]>
+  getTasks(filter?: Partial<TaskFilter>): Promise<Task[]>
 }

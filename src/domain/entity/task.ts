@@ -1,6 +1,6 @@
 import { Page } from './page'
 
-export type TaskStatus = 'TODO'
+export type TaskStatus = 'TODO' | 'DONE' | 'IN_PROGRESS'
 export type Task = {
   id: string
   topic: string
