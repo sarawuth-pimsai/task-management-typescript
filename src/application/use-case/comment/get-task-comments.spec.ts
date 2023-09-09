@@ -27,7 +27,7 @@ describe('Get Task Comments', () => {
     }
     return comments
   }
-  function createTaskContext(comments: Comment[]) {
+  function createTaskCommentsServiceContext(comments: Comment[]) {
     const commentMemoryConfig: CommentMemoryConfig = {
       comments,
     }
@@ -41,7 +41,7 @@ describe('Get Task Comments', () => {
   beforeAll(() => {
     taskIDs = [...Array(10).keys()].map((no) => faker.string.uuid())
     comments = createTaskComments(taskIDs, 100)
-    const context = createTaskContext(comments)
+    const context = createTaskCommentsServiceContext(comments)
     service = new GetTaskCommentsService(context.getTaskCommentsServiceContext)
   })
 
