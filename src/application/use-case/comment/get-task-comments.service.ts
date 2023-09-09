@@ -1,13 +1,13 @@
-import GetTaskCommentsRepository from '@application/port/repository/comment/get-task-comments.repository'
 import { Comment } from '@domain/entity/comment'
 import GetTaskCommnetsUseCase from '@domain/use-case/comment/get-task-comments.use-case'
+import GetTaskCommentsRepository from '@application/port/repository/comment/get-task-comments.repository'
 import InvalidParamsError from '@errors/invalid-params.error'
 
 export type GetTaskCommentsServiceContext = {
   getTaskCommentsRepo: GetTaskCommentsRepository
 }
 export default class GetTaskCommentsService implements GetTaskCommnetsUseCase {
-  readonly getTaskCommentsRepo: GetTaskCommentsRepository
+  private readonly getTaskCommentsRepo: GetTaskCommentsRepository
   constructor(context: GetTaskCommentsServiceContext) {
     this.getTaskCommentsRepo = context.getTaskCommentsRepo
   }

@@ -1,12 +1,12 @@
 import GetUserRepository from '@application/port/repository/user/get-user.repository'
 import { User } from '@domain/entity/user'
 
-export type GetUserMemoryConfig = {
+export type UserMemoryConfig = {
   users: User[]
 }
-export default class GetUserMemory implements GetUserRepository {
+export default class UserMemory implements GetUserRepository {
   private readonly users: User[]
-  constructor(config: GetUserMemoryConfig) {
+  constructor(config: UserMemoryConfig) {
     this.users = config.users
   }
   async getUser(userId: string): Promise<User | undefined> {
