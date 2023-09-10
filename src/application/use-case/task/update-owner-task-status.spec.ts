@@ -42,6 +42,7 @@ describe('Update Owner Task Status', () => {
       const user: User = {
         id: faker.string.uuid(),
         displayName: faker.person.fullName(),
+        avatar: faker.image.avatar(),
       }
       users.push(user)
     }

@@ -9,6 +9,14 @@ describe('Get User', () => {
   let users: User[]
   function createUsers(no: number): User[] {
     let users: User[] = []
+    for (let i: number = 0; i < no; i++) {
+      const user: User = {
+        id: faker.string.uuid(),
+        displayName: faker.person.fullName(),
+        avatar: faker.image.avatar(),
+      }
+      users.push(user)
+    }
     return users
   }
 
@@ -53,11 +61,12 @@ describe('Get User', () => {
 
   it(`should return success`, async () => {
     const expectResult: User = faker.helpers.arrayElement<User>(users)
+
     const context = createContext(users)
     const service: GetUserService = new GetUserService(
       context.getUserServiceContext
     )
     const result: User | undefined = await service.getUser(expectResult.id)
-    expect(result).toBe(expectResult)
+    expect(result).toEqual(expectResult)
   })
 })

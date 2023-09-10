@@ -42,7 +42,13 @@ describe('Delete Owner Task', () => {
     }
     const taskMemory: TaskMemory = new TaskMemory(taskMemoryConfig)
     const userMemoryConfig: UserMemoryConfig = {
-      users: [{ id: ownerId, displayName: faker.person.fullName() }],
+      users: [
+        {
+          id: ownerId,
+          displayName: faker.person.fullName(),
+          avatar: faker.image.avatar(),
+        },
+      ],
     }
     const userMemory: UserMemory = new UserMemory(userMemoryConfig)
     const deleteOwnerTaskServiceContext: DeleteOwnerTaskServiceContext = {
