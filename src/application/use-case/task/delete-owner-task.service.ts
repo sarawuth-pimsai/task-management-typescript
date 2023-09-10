@@ -1,3 +1,4 @@
+import DeleteTaskCommentsRepository from '@application/port/repository/comment/delete-task-comments.repository'
 import DeleteTaskRepository from '@application/port/repository/task/delete-task.repository'
 import GetTaskRepository from '@application/port/repository/task/get-task.repository'
 import GetUserRepository from '@application/port/repository/user/get-user.repository'
@@ -12,17 +13,20 @@ import ValidateUtil from '@utils/validate.utils'
 
 export type DeleteOwnerTaskServiceContext = {
   deleteTaskRepo: DeleteTaskRepository
+  deleteTaskComentsRepo: DeleteTaskCommentsRepository
   getTaskRepo: GetTaskRepository
   getUserRepo: GetUserRepository
 }
 export default class DeleteOwnerTaskService implements DeleteOwnerTaskUseCase {
   private readonly deleteTaskRepo: DeleteTaskRepository
+  private readonly deleteTaskCommentsRepo: DeleteTaskCommentsRepository
   private readonly getTaskRepo: GetTaskRepository
   private readonly getUserRepo: GetUserRepository
   constructor(context: DeleteOwnerTaskServiceContext) {
-    this.deleteTaskRepo = context.deleteTaskRepo
     this.getTaskRepo = context.getTaskRepo
     this.getUserRepo = context.getUserRepo
+    this.deleteTaskRepo = context.deleteTaskRepo
+    this.deleteTaskCommentsRepo = context.deleteTaskComentsRepo
   }
   async deleteOwnerTask(userId: string, taskId: string): Promise<boolean> {
     const isUserIdValid: boolean = ValidateUtil.userId(userId)
@@ -41,6 +45,8 @@ export default class DeleteOwnerTaskService implements DeleteOwnerTaskUseCase {
     if (task.userId !== user.id) {
       throw new ForbiddenError(`User is not owner this task`)
     }
-    return await this.deleteTaskRepo.deleteTask(taskId)
+    await this.deleteTaskRepo.deleteTask(taskId)
+    await this.deleteTaskCommentsRepo.deleteTaskComments(taskId)
+    return true
   }
 }

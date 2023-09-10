@@ -9,11 +9,16 @@ import DeleteOwnerTaskService, {
 } from './delete-owner-task.service'
 import UserMemory, { UserMemoryConfig } from '@persistent/memory/user.memory'
 import UnauthorizedError from '@errors/unauthorized.error'
+import { Comment } from '@domain/entity/comment'
+import CommentMemory, {
+  CommentMemoryConfig,
+} from '@persistent/memory/comment.memory'
 
 describe('Delete Owner Task', () => {
   let ownerId: string
   let taskIDs: string[]
   let tasks: Task[]
+  let comments: Comment[]
   let service: DeleteOwnerTaskService
 
   function createTasks(ownerId: string, no: number): Task[] {
@@ -37,11 +42,37 @@ describe('Delete Owner Task', () => {
     return tasks
   }
 
-  function createDeleteOwnerTaskServiceContext(tasks: Task[]) {
+  function createTaskComments(
+    userIDs: string[],
+    taskIDs: string[],
+    no: number
+  ): Comment[] {
+    let comments: Comment[] = []
+    for (let i: number = 0; i < no; i++) {
+      const comment: Comment = {
+        id: faker.string.uuid(),
+        description: faker.lorem.paragraph(),
+        taskId: faker.helpers.arrayElement<string>(taskIDs),
+        userId: faker.helpers.arrayElement<string>(userIDs),
+        created: faker.date.anytime(),
+      }
+      comments.push(comment)
+    }
+    return comments
+  }
+
+  function createDeleteOwnerTaskServiceContext(
+    tasks: Task[],
+    comments: Comment[]
+  ) {
     const taskMemoryConfig: TaskMemoryConfig = {
       tasks,
     }
     const taskMemory: TaskMemory = new TaskMemory(taskMemoryConfig)
+    const commentMemoryConfig: CommentMemoryConfig = {
+      comments,
+    }
+    const commentMemory: CommentMemory = new CommentMemory(commentMemoryConfig)
     const userMemoryConfig: UserMemoryConfig = {
       users: [
         {
@@ -53,9 +84,10 @@ describe('Delete Owner Task', () => {
     }
     const userMemory: UserMemory = new UserMemory(userMemoryConfig)
     const deleteOwnerTaskServiceContext: DeleteOwnerTaskServiceContext = {
-      deleteTaskRepo: taskMemory,
       getTaskRepo: taskMemory,
       getUserRepo: userMemory,
+      deleteTaskRepo: taskMemory,
+      deleteTaskComentsRepo: commentMemory,
     }
     return { deleteOwnerTaskServiceContext }
   }
@@ -64,7 +96,8 @@ describe('Delete Owner Task', () => {
     ownerId = faker.string.uuid()
     tasks = createTasks(ownerId, 10)
     taskIDs = tasks.map((task) => task.id)
-    const context = createDeleteOwnerTaskServiceContext(tasks)
+    comments = createTaskComments([ownerId], taskIDs, 10)
+    const context = createDeleteOwnerTaskServiceContext(tasks, comments)
     service = new DeleteOwnerTaskService(context.deleteOwnerTaskServiceContext)
   })
 
