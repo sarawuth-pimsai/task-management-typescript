@@ -1,8 +1,12 @@
-import express, { Express } from 'express'
+import express, { Express, Request, Response } from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
 import helmet from 'helmet'
 import { ENV } from '@domain/entity/env'
+import TaskRouter from './routes/task.router'
+import ErrorsHandler from './handlers/error/errors.handler'
+import AuthenticationMiddler from './middlewares/authentication.middleware'
+
 export type RestApplicationOptions = {
   port: number
   baseUrl: string
@@ -31,7 +35,15 @@ export default class RestApplication {
     this.app.use(morgan(logFormat))
   }
   initialRoutes() {
-    // this.app.use(`${this.baseUrl}/tasks`)
+    this.app.use(
+      `${this.baseUrl}/tasks`,
+      AuthenticationMiddler.authentication,
+      TaskRouter.initial()
+    )
+    this.app.use(`${this.baseUrl}`, function (_req: Request, res: Response) {
+      res.json({ notfound: 'page' })
+    })
+    this.app.use(ErrorsHandler.errors)
   }
   start() {
     this.app.listen(this.port, () => {
