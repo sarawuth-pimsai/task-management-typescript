@@ -80,7 +80,6 @@ export default class TaskQueryMySQL
   }
 
   async getTask(taskId: string): Promise<Task | undefined> {
-    let task: Task | undefined = undefined
     const connection = this.openConnection()
     const sqlQuery = `
       SELECT
@@ -95,9 +94,11 @@ export default class TaskQueryMySQL
     `
     const [result] = await connection.promise().query(sqlQuery)
     const tasks: Task[] = result as Task[]
+    let task: Task | undefined = undefined
     if (tasks.length > 0) {
       task = tasks[0]
     }
+    this.closeConnection(connection)
     return task
   }
 }
