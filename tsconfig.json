@@ -1,7 +1,4 @@
 {
-  "ts-node": {
-    "swc": true
-  },
   "compilerOptions": {
     "target": "es2016",
     "module": "commonjs",
@@ -15,16 +12,16 @@
     "strict": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "baseUrl": ".",
+    "baseUrl": "src",
     "paths": {
-      "@application/*": ["./src/application/*"],
-      "@cmd/*": ["./src/cmd/*"],
-      "@configs/*": ["./src/configs/*"],
-      "@domain/*": ["./src/domain/*"],
-      "@errors/*": ["./src/errors/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@persistent/*": ["./src/infrastructure/persistent/*"],
-      "@rest/*": ["./src/presentation/rest/*"]
+      "@application/*": ["application/*"],
+      "@cmd/*": ["cmd/*"],
+      "@configs/*": ["configs/*"],
+      "@domain/*": ["domain/*"],
+      "@errors/*": ["errors/*"],
+      "@utils/*": ["utils/*"],
+      "@persistent/*": ["infrastructure/persistent/*"],
+      "@rest/*": ["presentation/rest/*"]
     }
   },
   "include": ["src/**/*"],

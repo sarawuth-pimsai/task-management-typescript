@@ -2,7 +2,7 @@
   "verbose": true,
   "clearMocks": true,
   "transform": {
-    "^.+\\.ts?$": "@swc/jest"
+    "^.+\\.(t|j)sx?$": ["@swc-node/jest"]
   },
   "moduleNameMapper": {
     "^@application/(.*)$": "<rootDir>/application/$1",
@@ -13,5 +13,6 @@
     "^@utils/(.*)$": "<rootDir>/utils/$1",
     "^@persistent/(.*)$": "<rootDir>/infrastructure/persistent/$1",
     "^@rest/(.*)$": "<rootDir>/presentation/rest/$1"
-  }
+  },
+  "testMatch": ["<rootDir>/**/*.spec.ts"]
 }
