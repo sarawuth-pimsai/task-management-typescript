@@ -1,31 +1,19 @@
-import GetTasksRepository from '@application/port/repository/task/get-tasks.repository'
-import GetTasksService, {
-  GetTasksServiceContext,
-} from '@application/use-case/task/get-tasks.service'
-import TaskQueryMySQL, {
-  TaskQueryMySQLOptions,
-} from '@persistent/mysql/task-query.mysql'
+import GetTasksService from '@application/use-case/task/get-tasks.service'
+import { TaskFilter, TaskStatus } from '@domain/entity/task'
+import TaskContext from '@rest/contexts/task.context'
 import { Request, Response } from 'express'
 
 export default class GetTasksHandler {
   static async getTasks(_req: Request, res: Response) {
-    const taskQueryMySQLOptions: TaskQueryMySQLOptions = {
-      host: 'localhost',
-      username: 'pdev',
-      password: 'SayYIacI2METzgKtLaXjaT81FJqp4bep',
-      database: 'portal_dev',
+    const context = TaskContext.create()
+    let filter: TaskFilter | undefined = undefined
+    if (_req.query.status) {
+      filter = { status: _req.query.status as TaskStatus }
     }
-    const taskQueryMysQL: TaskQueryMySQL = new TaskQueryMySQL(
-      taskQueryMySQLOptions
+    const service: GetTasksService = new GetTasksService(
+      context.getTasksServiceContext
     )
-    const getTasksRepo: GetTasksRepository = taskQueryMysQL
-    const getTasksServiceContext: GetTasksServiceContext = {
-      getTasksRepo,
-    }
-    const getTasksService: GetTasksService = new GetTasksService(
-      getTasksServiceContext
-    )
-    const result = await getTasksService.getTasks()
-    res.json({ hello: result })
+    const result = await service.getTasks(filter)
+    res.json(result)
   }
 }

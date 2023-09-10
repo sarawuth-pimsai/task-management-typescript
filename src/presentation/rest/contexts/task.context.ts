@@ -35,10 +35,7 @@ export default class TaskContext {
       port: parseInt(config.mysql.command.port ?? '3306'),
       ca: config.mysql.command.ca,
     }
-    const commentCommandMySQL: CommentCommandMySQL = new CommentCommandMySQL(
-      commentCommandMySQLOptions
-    )
-    return commentCommandMySQL
+    return new CommentCommandMySQL(commentCommandMySQLOptions)
   }
 
   static createTaskQueryMySQL(): TaskQueryMySQL {
@@ -58,10 +55,7 @@ export default class TaskContext {
       port: parseInt(config.mysql.query.port ?? '3306'),
       ca: config.mysql.query.ca,
     }
-    const taskQueryMySQL: TaskQueryMySQL = new TaskQueryMySQL(
-      taskQueryMySQLOptions
-    )
-    return taskQueryMySQL
+    return new TaskQueryMySQL(taskQueryMySQLOptions)
   }
 
   static createTaskCommandMySQL(): TaskCommandMySQL {
@@ -81,10 +75,7 @@ export default class TaskContext {
       port: parseInt(config.mysql.command.port ?? '3306'),
       ca: config.mysql.command.ca,
     }
-    const taskCommandMySQL: TaskCommandMySQL = new TaskCommandMySQL(
-      taskCommandMySQLOptions
-    )
-    return taskCommandMySQL
+    return new TaskCommandMySQL(taskCommandMySQLOptions)
   }
 
   static createUserQueryMySQL(): UserQueryMySQL {
@@ -104,10 +95,7 @@ export default class TaskContext {
       port: parseInt(config.mysql.query.port ?? '3306'),
       ca: config.mysql.query.ca,
     }
-    const userQueryMySQL: UserQueryMySQL = new UserQueryMySQL(
-      userQueryMySQLOptions
-    )
-    return userQueryMySQL
+    return new UserQueryMySQL(userQueryMySQLOptions)
   }
 
   static create() {
