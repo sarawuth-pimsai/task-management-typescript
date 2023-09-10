@@ -4,6 +4,6 @@ export default interface UpdateOwnerTaskStatusUseCase {
   updateOwnerTaskStatus(
     userId: string,
     taskId: string,
-    status: TaskStatus
+    status: string
   ): Promise<boolean>
 }

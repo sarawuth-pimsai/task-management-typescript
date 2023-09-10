@@ -7,6 +7,8 @@ import UpdateOwnerTaskStatusService, {
 import TaskMemory, { TaskMemoryConfig } from '@persistent/memory/task.memory'
 import InvalidParamsError from '@errors/invalid-params.error'
 import NotFoundError from '@errors/not-found.error'
+import UserMemory, { UserMemoryConfig } from '@persistent/memory/user.memory'
+import ForbiddenError from '@errors/forbidden.error'
 
 describe('Update Owner Task Status', () => {
   let users: User[]
@@ -46,7 +48,11 @@ describe('Update Owner Task Status', () => {
     return users
   }
 
-  function createContext(tasks: Task[]) {
+  function createContext(users: User[], tasks: Task[]) {
+    const userMemoryConfig: UserMemoryConfig = {
+      users,
+    }
+    const userMemory: UserMemory = new UserMemory(userMemoryConfig)
     const taskmemoryConfig: TaskMemoryConfig = {
       tasks,
     }
@@ -54,6 +60,8 @@ describe('Update Owner Task Status', () => {
     const updateOwnerTaskStatusServiceContext: UpdateOwnerTaskStatusServiceContext =
       {
         updateTaskStatusRepo: taskMemory,
+        getUserRepo: userMemory,
+        getTaskRepo: taskMemory,
       }
     return { updateOwnerTaskStatusServiceContext }
   }
@@ -79,7 +87,7 @@ describe('Update Owner Task Status', () => {
       'IN_PROGRESS',
       'TODO',
     ])
-    const context = createContext(tasks)
+    const context = createContext(users, tasks)
     const service: UpdateOwnerTaskStatusService =
       new UpdateOwnerTaskStatusService(
         context.updateOwnerTaskStatusServiceContext
@@ -92,7 +100,7 @@ describe('Update Owner Task Status', () => {
   it(`should return throw execption invalid task id`, () => {
     const userId: string = faker.helpers.arrayElement(userIDs)
     const taskId: string = faker.string.alpha({ length: { min: 10, max: 36 } })
-    const context = createContext(tasks)
+    const context = createContext(users, tasks)
     const service: UpdateOwnerTaskStatusService =
       new UpdateOwnerTaskStatusService(
         context.updateOwnerTaskStatusServiceContext
@@ -106,21 +114,21 @@ describe('Update Owner Task Status', () => {
     const task: Task = faker.helpers.arrayElement<Task>(tasks)
     const userId: string = task.userId
     const taskId: string = task.id
-    const status = 'TODO'
-    const context = createContext(tasks)
+    const status = 'UKNOWN'
+    const context = createContext(users, tasks)
     const service: UpdateOwnerTaskStatusService =
       new UpdateOwnerTaskStatusService(
         context.updateOwnerTaskStatusServiceContext
       )
     expect(async () => {
       await service.updateOwnerTaskStatus(userId, taskId, status)
-    })
+    }).rejects.toThrow(InvalidParamsError)
   })
 
   it(`should return throw execption user not found`, () => {
     const userId: string = faker.string.uuid()
     const taskId: string = faker.helpers.arrayElement(taskIDs)
-    const context = createContext(tasks)
+    const context = createContext(users, tasks)
     const service: UpdateOwnerTaskStatusService =
       new UpdateOwnerTaskStatusService(
         context.updateOwnerTaskStatusServiceContext
@@ -143,7 +151,7 @@ describe('Update Owner Task Status', () => {
       'IN_PROGRESS',
       'TODO',
     ])
-    const context = createContext(tasks)
+    const context = createContext(users, tasks)
     const service: UpdateOwnerTaskStatusService =
       new UpdateOwnerTaskStatusService(
         context.updateOwnerTaskStatusServiceContext
@@ -153,6 +161,43 @@ describe('Update Owner Task Status', () => {
     }).rejects.toThrow(NotFoundError)
   })
 
-  it(`should return throw execption don't have permission to update status`, () => {})
-  it(`should return success`, () => {})
+  it(`should return throw execption don't have permission to update status`, () => {
+    const task: Task = faker.helpers.arrayElement<Task>(tasks)
+    const userIDs: string[] = tasks
+      .filter((value) => value.userId !== task.userId)
+      .map((value) => value.userId)
+    const userId: string = faker.helpers.arrayElement(userIDs)
+    const taskId: string = task.id
+    const status: TaskStatus = 'DONE'
+    const context = createContext(users, tasks)
+    const service: UpdateOwnerTaskStatusService =
+      new UpdateOwnerTaskStatusService(
+        context.updateOwnerTaskStatusServiceContext
+      )
+    expect(async () => {
+      await service.updateOwnerTaskStatus(userId, taskId, status)
+    }).rejects.toThrow(ForbiddenError)
+  })
+  it(`should return success`, async () => {
+    const task: Task = faker.helpers.arrayElement<Task>(tasks)
+    const userId: string = task.userId
+    const taskId: string = task.id
+    const status: TaskStatus = faker.helpers.arrayElement<TaskStatus>([
+      'DONE',
+      'IN_PROGRESS',
+      'TODO',
+    ])
+    const context = createContext(users, tasks)
+    const service: UpdateOwnerTaskStatusService =
+      new UpdateOwnerTaskStatusService(
+        context.updateOwnerTaskStatusServiceContext
+      )
+    const expectResult: boolean = true
+    const result: boolean = await service.updateOwnerTaskStatus(
+      userId,
+      taskId,
+      status
+    )
+    expect(result).toBe(expectResult)
+  })
 })
