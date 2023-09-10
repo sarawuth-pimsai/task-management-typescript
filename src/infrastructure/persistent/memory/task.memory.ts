@@ -29,7 +29,7 @@ export default class TaskMemory
     return true
   }
   async getTasks(filter?: Partial<TaskFilter>): Promise<Task[]> {
-    let tasks: Task[] = []
+    let tasks: Task[] = this.tasks
     // const page: number = filter?.page ?? 1
     // const limit: number = filter?.limit ?? 100
     const status = filter?.status
