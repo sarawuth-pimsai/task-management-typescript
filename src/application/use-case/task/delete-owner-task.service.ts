@@ -7,6 +7,7 @@ import DeleteOwnerTaskUseCase from '@domain/use-case/task/delete-owner-task.use-
 import ForbiddenError from '@errors/forbidden.error'
 import InvalidParamsError from '@errors/invalid-params.error'
 import NotFoundError from '@errors/not-found.error'
+import UnauthorizedError from '@errors/unauthorized.error'
 import ValidateUtil from '@utils/validate.utils'
 
 export type DeleteOwnerTaskServiceContext = {
@@ -26,7 +27,7 @@ export default class DeleteOwnerTaskService implements DeleteOwnerTaskUseCase {
   async deleteOwnerTask(userId: string, taskId: string): Promise<boolean> {
     const isUserIdValid: boolean = ValidateUtil.userId(userId)
     if (isUserIdValid === false) {
-      throw new InvalidParamsError(`Please check userId params`)
+      throw new UnauthorizedError(`Unauthorized`)
     }
     const isTaskIdValid: boolean = ValidateUtil.taskId(taskId)
     if (isTaskIdValid === false) {

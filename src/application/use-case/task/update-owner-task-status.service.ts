@@ -7,6 +7,7 @@ import UpdateOwnerTaskStatusUseCase from '@domain/use-case/task/update-owner-tas
 import ForbiddenError from '@errors/forbidden.error'
 import InvalidParamsError from '@errors/invalid-params.error'
 import NotFoundError from '@errors/not-found.error'
+import UnauthorizedError from '@errors/unauthorized.error'
 import ValidateUtil from '@utils/validate.utils'
 
 export type UpdateOwnerTaskStatusServiceContext = {
@@ -34,7 +35,7 @@ export default class UpdateOwnerTaskStatusService
   ): Promise<boolean> {
     const isUserIdValid: boolean = ValidateUtil.userId(userId)
     if (isUserIdValid === false) {
-      throw new InvalidParamsError(`Invalid userId.`)
+      throw new UnauthorizedError(`Invalid userId.`)
     }
     const isTaskIdValid: boolean = ValidateUtil.taskId(taskId)
     if (isTaskIdValid === false) {

@@ -6,6 +6,7 @@ import { ENV } from '@domain/entity/env'
 import TaskRouter from './routes/task.router'
 import ErrorsHandler from './handlers/error/errors.handler'
 import AuthenticationMiddler from './middlewares/authentication.middleware'
+import expressAsyncHandler from 'express-async-handler'
 
 export type RestApplicationOptions = {
   port: number
@@ -37,7 +38,7 @@ export default class RestApplication {
   initialRoutes() {
     this.app.use(
       `${this.baseUrl}/tasks`,
-      AuthenticationMiddler.authentication,
+      expressAsyncHandler(AuthenticationMiddler.authentication),
       TaskRouter.initial()
     )
     this.app.use(`${this.baseUrl}`, function (_req: Request, res: Response) {

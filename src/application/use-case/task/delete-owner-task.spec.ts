@@ -8,6 +8,7 @@ import DeleteOwnerTaskService, {
   DeleteOwnerTaskServiceContext,
 } from './delete-owner-task.service'
 import UserMemory, { UserMemoryConfig } from '@persistent/memory/user.memory'
+import UnauthorizedError from '@errors/unauthorized.error'
 
 describe('Delete Owner Task', () => {
   let ownerId: string
@@ -81,11 +82,11 @@ describe('Delete Owner Task', () => {
     }).rejects.toThrow(InvalidParamsError)
   })
 
-  it(`should return throw execption invalid user id`, () => {
+  it(`should return throw execption unauthorized`, () => {
     const taskId: string = taskIDs[0]
     expect(async () => {
       await service.deleteOwnerTask('', taskId)
-    }).rejects.toThrow(InvalidParamsError)
+    }).rejects.toThrow(UnauthorizedError)
   })
 
   it(`should return throw don't have permition`, () => {

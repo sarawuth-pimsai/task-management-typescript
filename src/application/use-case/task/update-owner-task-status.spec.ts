@@ -9,6 +9,7 @@ import InvalidParamsError from '@errors/invalid-params.error'
 import NotFoundError from '@errors/not-found.error'
 import UserMemory, { UserMemoryConfig } from '@persistent/memory/user.memory'
 import ForbiddenError from '@errors/forbidden.error'
+import UnauthorizedError from '@errors/unauthorized.error'
 
 describe('Update Owner Task Status', () => {
   let users: User[]
@@ -80,7 +81,7 @@ describe('Update Owner Task Status', () => {
     taskIDs = []
   })
 
-  it(`should return throw execption invalid user id`, () => {
+  it(`should return throw execption unauthorized`, () => {
     const userId: string = faker.string.alpha({ length: { min: 10, max: 36 } })
     const taskId: string = faker.helpers.arrayElement(taskIDs)
     const status: TaskStatus = faker.helpers.arrayElement<TaskStatus>([
@@ -95,7 +96,7 @@ describe('Update Owner Task Status', () => {
       )
     expect(async () => {
       await service.updateOwnerTaskStatus(userId, taskId, status)
-    }).rejects.toThrow(InvalidParamsError)
+    }).rejects.toThrow(UnauthorizedError)
   })
 
   it(`should return throw execption invalid task id`, () => {
