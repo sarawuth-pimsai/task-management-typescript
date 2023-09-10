@@ -13,6 +13,7 @@
     "dev": "nodemon",
     "test": "jest --config ./jest.config.json",
     "test:coverage": "jest --collectCoverage --config ./jest.config.json",
+    "test:memory": "node --expose-gc ./node_modules/.bin/jest --runInBand --logHeapUsage --config ./jest.config.json",
     "build": "npm run clean && swc src -d build --config-file .swcrc",
     "start:express": "node ./build/cmd/express.cmd.js"
   },
