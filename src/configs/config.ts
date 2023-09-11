@@ -13,7 +13,7 @@ export type Config = {
 } & GlobalConfig
 
 const config: Config = {
-  env: (process.env.ENV as ENV) ?? 'local',
+  env: process.env.ENV as ENV,
   application: applicationConfig,
   mysql: mySQLConfigs,
 }

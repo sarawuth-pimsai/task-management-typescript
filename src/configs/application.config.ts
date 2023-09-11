@@ -10,8 +10,8 @@ export type ApplicationConfig = {
 
 const applicationConfig: ApplicationConfig = {
   rest: restApplicationConfig,
-  secretKey: process.env.APPLICATION_SECRET_KEY ?? '',
-  refreshKey: process.env.APPLICATION_REFRESH_KEY ?? '',
+  secretKey: process.env.APPLICATION_SECRET_KEY as string,
+  refreshKey: process.env.APPLICATION_REFRESH_KEY as string,
 }
 
 export default applicationConfig

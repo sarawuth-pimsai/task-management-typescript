@@ -57,11 +57,14 @@ export default class TaskQueryMySQL
     return sqlFilter
   }
 
-  async getTasks(filter?: Partial<TaskFilter> | undefined): Promise<Task[]> {
+  async getTasks(filter: TaskFilter): Promise<Task[]> {
     let sqlFilter: string[] = []
     if (filter) {
       sqlFilter = this.filter(filter)
     }
+    const page: number = filter.page as number
+    const limit: number = filter.limit as number
+    const offset: number = (page - 1) * limit + 1
     const connection = this.openConnection()
     let sqlQuery = `
       SELECT
@@ -73,6 +76,7 @@ export default class TaskQueryMySQL
         task_created AS created
       FROM tasks
       ${sqlFilter.length > 0 ? `WHERE ${sqlFilter.join(' AND ')}` : ''}
+      LIMIT ${offset - 1}, ${filter.limit}
     `
     const [result] = await connection.promise().query(sqlQuery)
     this.closeConnection(connection)

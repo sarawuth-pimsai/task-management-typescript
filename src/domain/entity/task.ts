@@ -10,5 +10,5 @@ export type Task = {
   created: Date
 }
 export type TaskFilter = {
-  status: TaskStatus
+  status?: TaskStatus
 } & Partial<Page>
