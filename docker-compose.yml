@@ -7,8 +7,6 @@ services:
       target: deploy
     image: robinhood/task_management_rest_api
     container_name: task_management_rest_api
-    links:
-      - 'db:database'
     ports:
       - 3000:3000
     # command: node ./cmd/rest.cmd.js
@@ -32,5 +30,3 @@ services:
       - 3306:3306
     command: --default-authentication-plugin=mysql_native_password
     restart: always
-networks:
-  database:

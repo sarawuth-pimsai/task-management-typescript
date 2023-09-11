@@ -1,5 +1,5 @@
 import GetTasksService from '@application/use-case/task/get-tasks.service'
-import { TaskFilter, TaskStatus } from '@domain/entity/task'
+import { Task, TaskFilter, TaskStatus } from '@domain/entity/task'
 import TaskContext from '@rest/contexts/task.context'
 import { Request, Response } from 'express'
 
@@ -13,7 +13,7 @@ export default class GetTasksHandler {
     const service: GetTasksService = new GetTasksService(
       context.getTasksServiceContext
     )
-    const result = await service.getTasks(filter)
-    res.json(result)
+    const result: Task[] = await service.getTasks(filter)
+    res.json({ data: result })
   }
 }

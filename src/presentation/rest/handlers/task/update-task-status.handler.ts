@@ -12,7 +12,11 @@ export default class UpdateTaskStatusHandler {
       new UpdateOwnerTaskStatusService(
         context.updateOwnerTaskStatusServiceContext
       )
-    const result = service.updateOwnerTaskStatus(userId, taskId, status)
-    res.json({ taskId, result })
+    const result: boolean = await service.updateOwnerTaskStatus(
+      userId,
+      taskId,
+      status
+    )
+    res.json({ status: result })
   }
 }

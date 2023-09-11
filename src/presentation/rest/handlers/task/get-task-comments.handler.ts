@@ -1,4 +1,5 @@
 import GetTaskCommentsService from '@application/use-case/comment/get-task-comments.service'
+import { Comment } from '@domain/entity/comment'
 import CommentContext from '@rest/contexts/comment.context'
 import { Request, Response } from 'express'
 
@@ -9,7 +10,7 @@ export default class GetTaskCommentsHandler {
     const service: GetTaskCommentsService = new GetTaskCommentsService(
       context.getTaskCommentsServiceContext
     )
-    const result = await service.getTaskComments(taskId)
-    res.json({ result })
+    const result: Comment[] = await service.getTaskComments(taskId)
+    res.json({ data: result })
   }
 }
