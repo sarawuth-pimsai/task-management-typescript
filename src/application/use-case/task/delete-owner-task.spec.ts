@@ -1,7 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { Task, TaskStatus } from '@domain/entity/task'
 import TaskMemory, { TaskMemoryConfig } from '@persistent/memory/task.memory'
-import InvalidParamsError from '@errors/invalid-params.error'
 import ForbiddenError from '@errors/forbidden.error'
 import NotFoundError from '@errors/not-found.error'
 import DeleteOwnerTaskService, {
@@ -13,6 +12,7 @@ import { Comment } from '@domain/entity/comment'
 import CommentMemory, {
   CommentMemoryConfig,
 } from '@persistent/memory/comment.memory'
+import InvalidError from '@errors/invalid.error'
 
 describe('Delete Owner Task', () => {
   let ownerId: string
@@ -112,7 +112,7 @@ describe('Delete Owner Task', () => {
     const userId: string = userIDs[0]
     expect(async () => {
       await service.deleteOwnerTask(userId, '')
-    }).rejects.toThrow(InvalidParamsError)
+    }).rejects.toThrow(InvalidError)
   })
 
   it(`should return throw execption unauthorized`, () => {

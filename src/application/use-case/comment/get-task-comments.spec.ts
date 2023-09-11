@@ -1,12 +1,12 @@
 import { faker } from '@faker-js/faker'
 import { Comment } from '@domain/entity/comment'
-import InvalidParamsError from '@errors/invalid-params.error'
 import GetTaskCommentsService, {
   GetTaskCommentsServiceContext,
 } from './get-task-comments.service'
 import CommentMemory, {
   CommentMemoryConfig,
 } from '@persistent/memory/comment.memory'
+import InvalidError from '@errors/invalid.error'
 
 describe('Get Task Comments', () => {
   let taskIDs: string[]
@@ -53,7 +53,7 @@ describe('Get Task Comments', () => {
   it(`should return execption task in invalid`, async () => {
     expect(async () => {
       await service.getTaskComments('')
-    }).rejects.toThrow(InvalidParamsError)
+    }).rejects.toThrow(InvalidError)
   })
 
   it(`should return suceess result`, async () => {

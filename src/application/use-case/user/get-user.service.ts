@@ -1,7 +1,7 @@
 import GetUserRepository from '@application/port/repository/user/get-user.repository'
 import { User } from '@domain/entity/user'
 import GetUserUseCase from '@domain/use-case/user/get-user.use-case'
-import InvalidParamsError from '@errors/invalid-params.error'
+import InvalidError from '@errors/invalid.error'
 import NotFoundError from '@errors/not-found.error'
 import ValidateUtil from '@utils/validate.utils'
 
@@ -17,7 +17,7 @@ export default class GetUserService implements GetUserUseCase {
     let user: User | undefined
     const isUserIdValid: boolean = ValidateUtil.userId(userId)
     if (isUserIdValid === false) {
-      throw new InvalidParamsError(`Invalid userId`)
+      throw new InvalidError(`Invalid userId`)
     }
     user = await this.getUserRepos.getUser(userId)
     if (!user) {

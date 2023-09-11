@@ -2,8 +2,8 @@ import { User } from '@domain/entity/user'
 import GetUserService, { GetUserServiceContext } from './get-user.service'
 import UserMemory, { UserMemoryConfig } from '@persistent/memory/user.memory'
 import { faker } from '@faker-js/faker'
-import InvalidParamsError from '@errors/invalid-params.error'
 import NotFoundError from '@errors/not-found.error'
+import InvalidError from '@errors/invalid.error'
 
 describe('Get User', () => {
   let users: User[]
@@ -45,7 +45,7 @@ describe('Get User', () => {
     )
     expect(async () => {
       await service.getUser(userId)
-    }).rejects.toThrow(InvalidParamsError)
+    }).rejects.toThrow(InvalidError)
   })
 
   it(`should return throw execption not found this user`, () => {

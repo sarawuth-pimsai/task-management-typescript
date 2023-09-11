@@ -2,8 +2,8 @@ import { faker } from '@faker-js/faker'
 import { Task, TaskStatus } from '@domain/entity/task'
 import GetTaskService, { GetTaskServiceContext } from './get-task.service'
 import TaskMemory, { TaskMemoryConfig } from '@persistent/memory/task.memory'
-import InvalidParamsError from '@errors/invalid-params.error'
 import NotFoundError from '@errors/not-found.error'
+import InvalidError from '@errors/invalid.error'
 
 describe('Get Task', () => {
   let taskId: string
@@ -56,7 +56,7 @@ describe('Get Task', () => {
   it('should return throw execption invalid task id', () => {
     expect(async () => {
       await service.getTask('')
-    }).rejects.toThrow(InvalidParamsError)
+    }).rejects.toThrow(InvalidError)
   })
 
   it(`should return throw execption not found task id`, () => {

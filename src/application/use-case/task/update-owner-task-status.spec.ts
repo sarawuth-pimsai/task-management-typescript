@@ -5,11 +5,11 @@ import UpdateOwnerTaskStatusService, {
   UpdateOwnerTaskStatusServiceContext,
 } from './update-owner-task-status.service'
 import TaskMemory, { TaskMemoryConfig } from '@persistent/memory/task.memory'
-import InvalidParamsError from '@errors/invalid-params.error'
 import NotFoundError from '@errors/not-found.error'
 import UserMemory, { UserMemoryConfig } from '@persistent/memory/user.memory'
 import ForbiddenError from '@errors/forbidden.error'
 import UnauthorizedError from '@errors/unauthorized.error'
+import InvalidError from '@errors/invalid.error'
 
 describe('Update Owner Task Status', () => {
   let users: User[]
@@ -109,7 +109,7 @@ describe('Update Owner Task Status', () => {
       )
     expect(async () => {
       await service.updateOwnerTaskStatus(userId, taskId, 'TODO')
-    }).rejects.toThrow(InvalidParamsError)
+    }).rejects.toThrow(InvalidError)
   })
 
   it(`should return throw execption invalid task status`, () => {
@@ -124,7 +124,7 @@ describe('Update Owner Task Status', () => {
       )
     expect(async () => {
       await service.updateOwnerTaskStatus(userId, taskId, status)
-    }).rejects.toThrow(InvalidParamsError)
+    }).rejects.toThrow(InvalidError)
   })
 
   it(`should return throw execption user not found`, () => {

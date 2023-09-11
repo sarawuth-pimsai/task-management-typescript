@@ -6,7 +6,7 @@ import { Task } from '@domain/entity/task'
 import { User } from '@domain/entity/user'
 import DeleteOwnerTaskUseCase from '@domain/use-case/task/delete-owner-task.use-case'
 import ForbiddenError from '@errors/forbidden.error'
-import InvalidParamsError from '@errors/invalid-params.error'
+import InvalidError from '@errors/invalid.error'
 import NotFoundError from '@errors/not-found.error'
 import UnauthorizedError from '@errors/unauthorized.error'
 import ValidateUtil from '@utils/validate.utils'
@@ -35,7 +35,7 @@ export default class DeleteOwnerTaskService implements DeleteOwnerTaskUseCase {
     }
     const isTaskIdValid: boolean = ValidateUtil.taskId(taskId)
     if (isTaskIdValid === false) {
-      throw new InvalidParamsError(`Please check taskId params ${taskId}`)
+      throw new InvalidError(`Please check taskId params ${taskId}`)
     }
     const user: User | undefined = await this.getUserRepo.getUser(userId)
     const task: Task | undefined = await this.getTaskRepo.getTask(taskId)

@@ -5,7 +5,7 @@ import { Task, TaskStatus } from '@domain/entity/task'
 import { User } from '@domain/entity/user'
 import UpdateOwnerTaskStatusUseCase from '@domain/use-case/task/update-owner-task-status.use-case'
 import ForbiddenError from '@errors/forbidden.error'
-import InvalidParamsError from '@errors/invalid-params.error'
+import InvalidError from '@errors/invalid.error'
 import NotFoundError from '@errors/not-found.error'
 import UnauthorizedError from '@errors/unauthorized.error'
 import ValidateUtil from '@utils/validate.utils'
@@ -39,10 +39,10 @@ export default class UpdateOwnerTaskStatusService
     }
     const isTaskIdValid: boolean = ValidateUtil.taskId(taskId)
     if (isTaskIdValid === false) {
-      throw new InvalidParamsError(`Invalid taskId`)
+      throw new InvalidError(`Invalid taskId`)
     }
     if (!['TODO', 'DONE', 'IN_PROGRESS'].includes(status)) {
-      throw new InvalidParamsError(`Invalid status`)
+      throw new InvalidError(`Invalid status`)
     }
     const user: User | undefined = await this.getUserRepo.getUser(userId)
     const task: Task | undefined = await this.getTaskRepo.getTask(taskId)
