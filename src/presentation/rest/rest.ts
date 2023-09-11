@@ -5,9 +5,8 @@ import helmet from 'helmet'
 import { ENV } from '@domain/entity/env'
 import TaskRouter from './routes/task.router'
 import ErrorsHandler from './handlers/error/errors.handler'
-import AuthenticationMiddler from './middlewares/authentication.middleware'
-import expressAsyncHandler from 'express-async-handler'
 import AuthRouter from './routes/auth.router'
+import MeMiddleware from './middlewares/me.middleware'
 
 export type RestApplicationOptions = {
   port: number
@@ -37,11 +36,7 @@ export default class RestApplication {
     this.app.use(morgan(logFormat))
   }
   initialRoutes() {
-    this.app.use(
-      `${this.baseUrl}/tasks`,
-      expressAsyncHandler(AuthenticationMiddler.authentication),
-      TaskRouter.initial()
-    )
+    this.app.use(`${this.baseUrl}/tasks`, MeMiddleware.me, TaskRouter.initial())
     this.app.use(`${this.baseUrl}/auth`, AuthRouter.initial())
     this.app.use(`${this.baseUrl}`, function (_req: Request, res: Response) {
       res.json({ notfound: 'page' })

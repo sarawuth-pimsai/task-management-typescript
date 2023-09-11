@@ -8,7 +8,7 @@ export default class DeleteTaskHandler {
     const service: DeleteOwnerTaskService = new DeleteOwnerTaskService(
       context.deleteOwnerTaskServiceContext
     )
-    const userId: string = ''
+    const userId: string = _req.context?.me.id
     const taskId: string = _req.params['taskId']
     const result: boolean = await service.deleteOwnerTask(userId, taskId)
     res.json({ status: result })

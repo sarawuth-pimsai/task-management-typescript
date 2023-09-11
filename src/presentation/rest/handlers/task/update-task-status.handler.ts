@@ -4,7 +4,7 @@ import { Request, Response } from 'express'
 
 export default class UpdateTaskStatusHandler {
   static async updateTaskStatus(_req: Request, res: Response) {
-    const userId: string = ''
+    const userId: string = _req.context?.me.id
     const taskId: string = _req.params['taskId']
     const status: string = _req.params['status']
     const context = TaskContext.create()
