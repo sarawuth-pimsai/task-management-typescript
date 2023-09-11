@@ -11,7 +11,7 @@ export type RestApplicationConfig = {
 
 const restApplicationConfig: RestApplicationConfig = {
   port: parseInt(process.env.APPLICATION_REST_PORT ?? '3000'),
-  baseUrl: process.env.APPLICATION_REST_BASE_URL ?? 'http://localhost:3000',
+  baseUrl: process.env.APPLICATION_REST_BASE_URL ?? '',
   origin: process.env.APPLICATION_REST_ORIGIN?.split(',') ?? '*',
 }
 

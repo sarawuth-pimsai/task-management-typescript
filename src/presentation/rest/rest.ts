@@ -7,6 +7,7 @@ import TaskRouter from './routes/task.router'
 import ErrorsHandler from './handlers/error/errors.handler'
 import AuthenticationMiddler from './middlewares/authentication.middleware'
 import expressAsyncHandler from 'express-async-handler'
+import AuthRouter from './routes/auth.router'
 
 export type RestApplicationOptions = {
   port: number
@@ -41,6 +42,7 @@ export default class RestApplication {
       expressAsyncHandler(AuthenticationMiddler.authentication),
       TaskRouter.initial()
     )
+    this.app.use(`${this.baseUrl}/auth`, AuthRouter.initial())
     this.app.use(`${this.baseUrl}`, function (_req: Request, res: Response) {
       res.json({ notfound: 'page' })
     })
