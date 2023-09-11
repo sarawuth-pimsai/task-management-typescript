@@ -14,20 +14,20 @@ export type MySQLConfigs = {
 
 const mySQLConfigs: MySQLConfigs = {
   command: {
-    host: process.env.MYSQL_COMMAND_HOST ?? '',
-    username: process.env.MYSQL_COMMAND_USERNAME ?? '',
-    password: process.env.MYSQL_COMMAND_PASSWORD ?? '',
-    database: process.env.MYSQL_COMMAND_DATABASE ?? '',
-    port: parseInt(process.env.MYSQL_COMMAND_PORT ?? '3306'),
-    ca: process.env.MYSQL_COMMAND_CA,
+    host: process.env.MYSQL_HOST ?? '',
+    username: process.env.MYSQL_USER ?? '',
+    password: process.env.MYSQL_PASSWORD ?? '',
+    database: process.env.MYSQL_DATABASE ?? '',
+    port: parseInt(process.env.MYSQL_PORT ?? '3306'),
+    ca: process.env.MYSQL_CA,
   },
   query: {
-    host: process.env.MYSQL_QUERY_HOST ?? '',
-    username: process.env.MYSQL_QUERY_USERNAME ?? '',
-    password: process.env.MYSQL_QUERY_PASSWORD ?? '',
-    database: process.env.MYSQL_QUERY_DATABASE ?? '',
-    port: parseInt(process.env.MYSQL_QUERY_PORT ?? '3306'),
-    ca: process.env.MYSQL_QUERY_CA,
+    host: process.env.MYSQL_HOST ?? '',
+    username: process.env.MYSQL_USER ?? '',
+    password: process.env.MYSQL_PASSWORD ?? '',
+    database: process.env.MYSQL_DATABASE ?? '',
+    port: parseInt(process.env.MYSQL_PORT ?? '3306'),
+    ca: process.env.MYSQL_CA,
   },
 }
 
