@@ -10,7 +10,7 @@ APPLICATION_REST_ORIGIN= #Application config origin ext: 'http://example.com,htt
 APPLICATION_SECRET_KEY= #Application access token secret key for encrypt
 APPLICATION_REFRESH_KEY= #Application refresh token key for encrypt
 
-MYSQL_HOST=db:database #MySQL config host(fix) if your change please edit links application service in docker-compose.yml too.
+MYSQL_HOST=db #MySQL config host(docker compose service name)
 MYSQL_ROOT_PASSWORD= #MySQL root password
 MYSQL_USER= #MySQL username
 MYSQL_PASSWORD= #MySQL password
